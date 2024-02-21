@@ -2,13 +2,14 @@ from langchain.chains import LLMChain
 from langchain_openai import ChatOpenAI
 from langchain.prompts import PromptTemplate
 
+
 class MyLLMChain:
     def __init__(self, use_rag=True):
         self.use_rag = use_rag
         base_url = "http://192.168.100.252:8000/v1/"
         llm = ChatOpenAI(temperature=0, api_key="EMPTY", base_url=base_url)
         self.llm_chain = self.generate_llm_chain(llm)
-    
+
     def generate_llm_chain(self, llm):
         if self.use_rag:
             template = PromptTemplate(
@@ -27,7 +28,7 @@ class MyLLMChain:
 
 请用中文回答用户问题。
 """,
-)
+            )
         else:
             template = PromptTemplate(
                 input_variables=["QUERY"],
@@ -40,12 +41,9 @@ class MyLLMChain:
 
 请用中文回答用户问题。
 """,
-)
-
-        return LLMChain(
-                llm=llm, prompt=template
             )
 
+        return LLMChain(llm=llm, prompt=template)
 
     def response(self, query, rag_info):
         if self.use_rag:
